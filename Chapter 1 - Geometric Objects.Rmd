@@ -1,0 +1,127 @@
+---
+title: "Chapter 1 - Geometric Objects"
+author: "Mohammed Khan"
+date: "9/20/2021"
+output:
+  word_document: default
+---
+
+1. What geom would you use to draw a line chart? A boxplot? A histogram? An area chart?
+```{r q1, eval = FALSE}
+library(ggplot2)
+# line chart 
+geom_line()
+# boxplot
+geom_boxplot()
+# histogram
+geom_histogram()
+# area chart
+geom_area()
+```
+
+2. Run this code in your head and predict what the output will look like. Then, run the dcode in R and check your predictions. 
+```{r q2, eval = FALSE}
+ggplot(
+  data = mpg,
+  mapping = aes(x = displ, y = hwy, color = drv)
+) +
+  geom_point() + 
+  geom_smooth(SE = FALSE)
+```
+This code will plot the data 'mpg' and map aesthetics on the plot such as x, y and colored values. The data points will be plotted as points and as a smooth line.The points and lines will be categorized by the variable assigned to the 'color' aesthetic (drv) and the points and lines will be split because we are applying local mappings to a global ggplot expression. 
+
+3. What does 'show.legend = FALSE' do? What happens if you remove it? Why do you think [it was used] earlier in the chapter?
+
+Example:
+```{r q3}
+ggplot(data = mpg) +
+  geom_smooth(
+    mapping = aes(x = displ, y = hwy, color = drv),
+    )
+```
+Removing 'show.legend = FALSE' outputs a legend on the right hand side of the plot. That means this expression removes the legend that is output along with the plot as a default. It was used earlier in the chapter to display the difference between using 'group' and 'color' as aesthetics. 
+
+4. What does the 'se' argument to geom_smooth() do?
+```{r q4}
+?geom_smooth
+```
+According to the 'help' function, 'se' displays the confidence interval around the smooth line. That would be the gray colored boundary which surrounds the line when graphed. 
+
+5. Will these two graphs look different? Why or why not?
+```{r q5}
+ggplot(data = mpg, mapping = aes(x = displ, y = hwy)) +
+  geom_point() + 
+  geom_smooth()
+
+ggplot() + 
+  geom_point(
+    data = mpg, 
+    mapping = aes(x = displ, y = hwy)
+  ) + 
+  geom_smooth(
+    data = mpg, 
+    mapping = aes(x = displ, y = hwy)
+  )
+```
+These two plots should be the same output because the same aesthetics are being input into both of the geoms. The difference between how the code is written is the first chunk is a single global mapping of the data, while the second chunk is two local mappings. 
+
+6. Re-create the R code necessary to generate the following graphs. 
+```{r q6}
+# plot 1
+ggplot(
+  data = mpg, mapping = aes(x = displ, y = hwy) 
+  ) +
+    geom_point()+
+    geom_smooth(
+      se = FALSE
+    )
+
+# plot 2
+ggplot(
+  data = mpg, mapping = aes(x = displ, y = hwy, group = drv) 
+  ) +
+    geom_point()+
+    geom_smooth(
+      se = FALSE
+    )
+
+# plot 3
+ggplot(
+  data = mpg, mapping = aes(x = displ, y = hwy, color = drv) 
+  ) +
+    geom_point()+
+    geom_smooth(
+      se = FALSE
+    )
+
+# plot 4
+ggplot(
+  data = mpg, mapping = aes(x = displ, y = hwy) 
+  ) +
+    geom_point(mapping = aes(color = drv)) +
+    geom_smooth(
+      se = FALSE
+    )
+
+# plot 5
+ggplot(
+  data = mpg, mapping = aes(x = displ, y = hwy) 
+  ) +
+    geom_point(
+      mapping = aes(color = drv)
+      ) +
+    geom_smooth(
+      mapping = aes(linetype = drv),
+      se = FALSE
+      )
+
+# plot 6
+ggplot(
+  data = mpg, mapping = aes(x = displ, y = hwy) 
+  ) +
+    geom_point(color = 'white', size = 5) + 
+    geom_point(
+      mapping = aes(color = drv)
+    )
+```
+
